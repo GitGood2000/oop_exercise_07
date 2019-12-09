@@ -11,12 +11,13 @@
 #include "painter.h"
 #include "loader.h"
 #include "undoer.h"
+#include "document.h"
 
 int main() {
     sdl::renderer renderer("Editor");
     bool quit = false;
-    //std::vector<std::unique_ptr<figure>> figures;
     std::unique_ptr<builder> active_builder = nullptr;
+    std::unique_ptr<document> document = nullptr;
     const int32_t file_name_length = 128;
     char file_name[file_name_length] = "";
     int32_t remove_id = 0;
@@ -42,7 +43,8 @@ int main() {
                     std::unique_ptr<figure> figure = //если в строителе 4 вершины, будет фигура, иначе nullptr
                         active_builder->add_vertex(vertex{ mouse_button_event.x(), mouse_button_event.y() }); // добавляем вершины
                     if (figure) {
-                        figures.emplace_back(std::move(figure)); //добавить полученный результат в вектор фигур
+                        //figures.emplace_back(std::move(figure)); //добавить полученный результат в вектор фигур
+                        //document->add_fgrs(figure);
                         active_builder = nullptr;
                     }
                 }
@@ -93,8 +95,8 @@ int main() {
         }
         ImGui::InputInt("Remove id", &remove_id);
         if (ImGui::Button("Remove")) {
-            ul.push(ul_rmv, std::move(*(figures.begin() + remove_id)));
-            figures.erase(figures.begin() + remove_id);
+            //rmv_fgrs(figures.erase(figures.begin() + remove_id);
+            //document->rmv_fgrs(remove_id);
         }
         
         if (ImGui::Button("Undo")) {

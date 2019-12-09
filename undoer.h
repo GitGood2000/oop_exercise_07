@@ -26,6 +26,9 @@ struct undo_list {
         std::unique_ptr<figure> fig;
         ul_element(int32_t _idx, std::unique_ptr<figure> _fig) : idx(_idx), fig(std::move(_fig)) {}
     };
+    struct command {
+        virtual void undo() = 0;
+    };
     std::stack<ul_element> ul_stack;
     std::vector<std::unique_ptr<figure>> ul_figures;
     void push(int exp, std::unique_ptr<figure> value) {

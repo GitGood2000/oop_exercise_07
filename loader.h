@@ -5,7 +5,7 @@
 #include<memory>
 
 #include "figure.h"
-#include "undoer.h"
+#include "document.h"
 
 struct loader {
     std::vector<std::unique_ptr<figure>> load(std::ifstream& is) {

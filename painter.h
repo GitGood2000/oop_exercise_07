@@ -14,7 +14,7 @@
 #include "square.h"
 #include "rectangle.h"
 #include "trapezoid.h"
-#include "undoer.h"
+#include "document.h"
 
 struct builder {
     virtual std::unique_ptr<figure> add_vertex(const vertex& v) = 0; // Добавление новой вершины в фигуру
@@ -30,7 +30,6 @@ struct triangle_builder : builder {
         if (n_ != 3) {
             return nullptr;
         }
-        ul.push(ul_add, nullptr);
         return std::make_unique<triangle>(vertices_);
     }
 
@@ -66,7 +65,6 @@ struct square_builder : builder {
         if (n_ != 4) {
             return nullptr;
         }
-        ul.push(ul_add, nullptr);
         return std::make_unique<square>(vertices_);
     }  
 
@@ -97,7 +95,6 @@ struct rectangle_builder : builder {
         if (n_ != 4) {
             return nullptr;
         }
-        ul.push(ul_add, nullptr);
         return std::make_unique<rectangle>(vertices_);
     }
 
@@ -114,7 +111,6 @@ struct trapezoid_builder : builder {
         if (n_ != 4) {
             return nullptr;
         }
-        ul.push(ul_add, nullptr);
         return std::make_unique<trapezoid>(vertices_);
     }
 

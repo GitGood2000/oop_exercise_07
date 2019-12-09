@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(lab7
   main.cpp
   sdl.cpp
+  document.cpp
 )
 
 add_subdirectory(lib/SDL2/)
