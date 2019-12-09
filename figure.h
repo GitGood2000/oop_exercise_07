@@ -14,13 +14,4 @@ struct figure {
     virtual ~figure() = default;
 };
 
-double distance(int x1, int y1, int x2, int y2) {
-    return sqrt(pow((x1 - x2),2)+ pow((y1 - y2), 2));
-}
-
-
-double distance(vertex a, vertex b) {
-    return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
-}
-
 #endif //D_FIGURE_H
