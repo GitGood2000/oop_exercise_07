@@ -14,6 +14,7 @@
 struct add_cmd;
 struct rmv_cmd;
 
+
 struct command {
 	virtual ~command() = default; //Деструктор (пока под вопросом)
 
@@ -21,9 +22,10 @@ struct command {
 };
 
 struct document {
-	document();
-	void add_fgrs(std::unique_ptr<figure> fgr);
+	document() {};
+	void add_fgrs(std::unique_ptr<figure>& fgr);
 	void rmv_fgrs(int32_t rmv_id);
+	std::vector<std::unique_ptr<figure>> call_fgrs();
 	//void undo();
 	
 private:
