@@ -26,7 +26,7 @@ struct document {
 	void add_fgrs(std::unique_ptr<figure>& fgr);
 	void rmv_fgrs(int32_t rmv_id);
 	std::vector<std::unique_ptr<figure>> call_fgrs();
-	//void undo();
+	void undo();
 	
 private:
 	friend struct add_cmd;

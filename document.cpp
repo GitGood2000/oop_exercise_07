@@ -9,8 +9,8 @@ struct add_cmd : command {
 
 private:
 	document* document_;
-	int32_t idx_;
-	std::unique_ptr<figure> figure_;
+	//int32_t idx_;
+	//std::unique_ptr<figure> figure_;
 };
 
 struct rmv_cmd : command {
@@ -37,6 +37,13 @@ void document::rmv_fgrs(int32_t rmv_id) {
 	figures.erase(figures.begin() + rmv_id);
 }
 
+void document::undo() {
+	if (commands.size()) {
+		commands.top()->undo();
+		commands.pop();
+	}
+}
+
 std::vector<std::unique_ptr<figure>> document::call_fgrs() {
-	return figures;
+	return this->figures;
 }

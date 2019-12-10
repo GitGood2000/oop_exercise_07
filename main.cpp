@@ -50,19 +50,19 @@ int main() {
             }
         }
 
-        for (const std::unique_ptr<figure>& figure : document->call_fgrs()) {
+        for (const std::unique_ptr<figure> &figure : document->call_fgrs()) {
             figure->render(renderer, red_c, grn_c, blu_c);
         }
 
         ImGui::Begin("Menu");
         if (ImGui::Button("New canvas")) {
-            document->call_fgrs().clear();
+            (document)->call_fgrs().clear();
         }
         ImGui::InputText("File name", file_name, file_name_length - 1);
         if (ImGui::Button("Save")) {
             std::ofstream os(file_name);
             if (os) {
-                for (const std::unique_ptr<figure>& figure : document->call_fgrs()) {
+                for (const std::unique_ptr<figure> &figure : document->call_fgrs()) {
                     figure->save(os);
                 }
             }
@@ -97,7 +97,7 @@ int main() {
         }
         
         if (ImGui::Button("Undo")) {
-            //ul.undo();
+            document->undo();
         }
 
         ImGui::End();
