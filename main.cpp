@@ -1,4 +1,4 @@
-#include <array>
+п»ї#include <array>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -13,10 +13,11 @@
 #include "document.h"
 
 int main() {
+    document document;
+    //std::unique_ptr<document> document;
     sdl::renderer renderer("Editor");
     bool quit = false;
-    std::shared_ptr<builder> active_builder = nullptr;
-    std::shared_ptr<document> document = nullptr;
+    std::unique_ptr<builder> active_builder = nullptr;
     const int32_t file_name_length = 128;
     char file_name[file_name_length] = "";
     int32_t remove_id = 0;
@@ -38,31 +39,36 @@ int main() {
             }
             else if (event.extract(mouse_button_event)) {
                 if (active_builder && mouse_button_event.button() == sdl::mouse_button_event::left &&
-                    mouse_button_event.type() == sdl::mouse_button_event::down) { //Если есть строитель и ЛКМ
-                    std::shared_ptr<figure> figure = //если в строителе достаточное количество вершин, будет фигура, иначе nullptr
-                        active_builder->add_vertex(vertex{ mouse_button_event.x(), mouse_button_event.y() }); // добавляем вершины
+                    mouse_button_event.type() == sdl::mouse_button_event::down) { //Р•СЃР»Рё РµСЃС‚СЊ СЃС‚СЂРѕРёС‚РµР»СЊ Рё Р›РљРњ
+                    std::unique_ptr<figure> figure = //РµСЃР»Рё РІ СЃС‚СЂРѕРёС‚РµР»Рµ РґРѕСЃС‚Р°С‚РѕС‡РЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РІРµСЂС€РёРЅ, Р±СѓРґРµС‚ С„РёРіСѓСЂР°, РёРЅР°С‡Рµ nullptr
+                        active_builder->add_vertex(vertex{ mouse_button_event.x(), mouse_button_event.y() }); // РґРѕР±Р°РІР»СЏРµРј РІРµСЂС€РёРЅС‹
                     if (figure) {
-                        //figures.emplace_back(std::move(figure)); //добавить полученный результат в вектор фигур
-                        document->add_fgrs(figure);
+                        //figures.emplace_back(std::move(figure)); //РґРѕР±Р°РІРёС‚СЊ РїРѕР»СѓС‡РµРЅРЅС‹Р№ СЂРµР·СѓР»СЊС‚Р°С‚ РІ РІРµРєС‚РѕСЂ С„РёРіСѓСЂ
+                        document.add_fgrs(std::move(figure));
                         active_builder = nullptr;
                     }
                 }
             }
         }
 
-        for (const std::shared_ptr<figure> &figure : document->call_fgrs()) {
-            figure->render(renderer, red_c, grn_c, blu_c);
+        //for (const std::unique_ptr<figure>& figure : document->figures) {
+            //figure->render(renderer, red_c, grn_c, blu_c);
+        //}
+
+        for (int i = 0; i < document.figures.size(); ++i) {
+            if (document.figures[i])
+                document.figures[i]->render(renderer, red_c, grn_c, blu_c);
         }
 
         ImGui::Begin("Menu");
         if (ImGui::Button("New canvas")) {
-            (document)->call_fgrs().clear();
+            document.figures.clear();
         }
         ImGui::InputText("File name", file_name, file_name_length - 1);
         if (ImGui::Button("Save")) {
             std::ofstream os(file_name);
             if (os) {
-                for (const std::shared_ptr<figure> &figure : document->call_fgrs()) {
+                for (const std::unique_ptr<figure>& figure : document.figures) {
                     figure->save(os);
                 }
             }
@@ -72,32 +78,34 @@ int main() {
             std::ifstream is(file_name);
             if (is) {
                 loader loader;
-                //document->call_fgrs() = loader.load(is);
+                document.figures = loader.load(is);
             }
         }
         ImGui::InputInt("R", &red_c);
         ImGui::InputInt("G", &grn_c);
         ImGui::InputInt("B", &blu_c);
         if (ImGui::Button("Triangle")) {
-            active_builder = std::make_shared<triangle_builder>();
+            active_builder = std::make_unique<triangle_builder>();
         }
         if (ImGui::Button("Square")) {
-            active_builder = std::make_shared<square_builder>();
+            active_builder = std::make_unique<square_builder>();
         }
         if (ImGui::Button("Rectangle")) {
-            active_builder = std::make_shared<rectangle_builder>();
+            active_builder = std::make_unique<rectangle_builder>();
         }
         if (ImGui::Button("Trapezoid")) {
-            active_builder = std::make_shared<trapezoid_builder>();
+            active_builder = std::make_unique<trapezoid_builder>();
         }
         ImGui::InputInt("Remove id", &remove_id);
         if (ImGui::Button("Remove")) {
-            //rmv_fgrs(figures.erase(figures.begin() + remove_id);
-            document->rmv_fgrs(remove_id);
+            if (remove_id < document.figures.size()) {
+                if (document.figures[remove_id])
+                    document.rmv_fgrs(remove_id);
+                //rmv_fgrs(figures.erase(figures.begin() + remove_id);
+            }
         }
-        
         if (ImGui::Button("Undo")) {
-            document->undo();
+            document.undo();
         }
 
         ImGui::End();

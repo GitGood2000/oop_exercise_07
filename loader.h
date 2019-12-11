@@ -8,9 +8,9 @@
 #include "document.h"
 
 struct loader {
-    std::vector<std::shared_ptr<figure>> load(std::ifstream& is) {
+    std::vector<std::unique_ptr<figure>> load(std::ifstream& is) {
         std::string figure_name;
-        std::vector<std::shared_ptr<figure>> figures;
+        std::vector<std::unique_ptr<figure>> figures;
         while (is >> figure_name) {
             vertex v;
             if (figure_name == std::string("triangle")) {
@@ -19,7 +19,7 @@ struct loader {
                     is >> v.x >> v.y;
                     vertices[i] = v;
                 }
-                figures.emplace_back(std::make_shared<triangle>(vertices));
+                figures.emplace_back(std::make_unique<triangle>(vertices));
             }
             if (figure_name == std::string("square")) {
                 std::array<vertex, 4> vertices;
@@ -27,7 +27,7 @@ struct loader {
                     is >> v.x >> v.y;
                     vertices[i] = v;
                 }
-                figures.emplace_back(std::make_shared<square>(vertices));
+                figures.emplace_back(std::make_unique<square>(vertices));
             }
             else if (figure_name == std::string("rectangle")) {
                 std::array<vertex, 4> vertices;
@@ -35,7 +35,7 @@ struct loader {
                     is >> v.x >> v.y;
                     vertices[i] = v;
                 }
-                figures.emplace_back(std::make_shared<rectangle>(vertices));
+                figures.emplace_back(std::make_unique<rectangle>(vertices));
             }
             else if (figure_name == std::string("trapezoid")) {
                 std::array<vertex, 4> vertices;
@@ -43,7 +43,7 @@ struct loader {
                     is >> v.x >> v.y;
                     vertices[i] = v;
                 }
-                figures.emplace_back(std::make_shared<trapezoid>(vertices));
+                figures.emplace_back(std::make_unique<trapezoid>(vertices));
             }
         }
         return figures;

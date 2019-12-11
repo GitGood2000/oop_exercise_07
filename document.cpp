@@ -3,7 +3,7 @@
 struct add_cmd : command {
 	add_cmd(document* document) : document_(document) {}
 
-	void undo() override  {
+	void undo() override {
 		document_->figures.pop_back();
 	}
 
@@ -27,7 +27,7 @@ private:
 	int32_t idx_;
 };
 
-void document::add_fgrs(std::unique_ptr<figure>& fgr) {
+void document::add_fgrs(std::unique_ptr<figure> fgr) {
 	figures.emplace_back(std::move(fgr)); //добавить полученный результат в вектор фигур
 	commands.push(std::make_unique<add_cmd>(this));
 }
@@ -42,8 +42,4 @@ void document::undo() {
 		commands.top()->undo();
 		commands.pop();
 	}
-}
-
-std::vector<std::unique_ptr<figure>> document::call_fgrs() {
-	return this->figures;
 }

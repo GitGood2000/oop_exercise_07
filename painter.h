@@ -17,20 +17,20 @@
 #include "document.h"
 
 struct builder {
-    virtual std::shared_ptr<figure> add_vertex(const vertex& v) = 0; // Добавление новой вершины в фигуру
+    virtual std::unique_ptr<figure> add_vertex(const vertex& v) = 0; // Добавление новой вершины в фигуру
 
     virtual ~builder() = default; // Деструктор (Не нужен, но должен быть)
 
 };
 
 struct triangle_builder : builder {
-    std::shared_ptr<figure> add_vertex(const vertex& v) {
+    std::unique_ptr<figure> add_vertex(const vertex& v) {
         vertices_[n_] = v;
         n_ += 1;
         if (n_ != 3) {
             return nullptr;
         }
-        return std::make_shared<triangle>(vertices_);
+        return std::make_unique<triangle>(vertices_);
     }
 
 private:
@@ -40,7 +40,7 @@ private:
 };
 
 struct square_builder : builder {
-    std::shared_ptr<figure> add_vertex(const vertex& v) {
+    std::unique_ptr<figure> add_vertex(const vertex& v) {
         if (n_ == 2) {
             int32_t vx = vertices_[1].x - vertices_[0].x;
             int32_t vy = vertices_[1].y - vertices_[0].y;
@@ -65,7 +65,7 @@ struct square_builder : builder {
         if (n_ != 4) {
             return nullptr;
         }
-        return std::make_shared<square>(vertices_);
+        return std::make_unique<square>(vertices_);
     }  
 
 private:
@@ -75,7 +75,7 @@ private:
 };
 
 struct rectangle_builder : builder {
-    std::shared_ptr<figure> add_vertex(const vertex& v) {
+    std::unique_ptr<figure> add_vertex(const vertex& v) {
         if (n_ == 2) {
             int32_t vx1 = vertices_[1].x - vertices_[0].x;
             int32_t vy1 = vertices_[1].y - vertices_[0].y;
@@ -95,7 +95,7 @@ struct rectangle_builder : builder {
         if (n_ != 4) {
             return nullptr;
         }
-        return std::make_shared<rectangle>(vertices_);
+        return std::make_unique<rectangle>(vertices_);
     }
 
 private:
@@ -105,13 +105,13 @@ private:
 };
 
 struct trapezoid_builder : builder {
-    std::shared_ptr<figure> add_vertex(const vertex& v) {
+    std::unique_ptr<figure> add_vertex(const vertex& v) {
         vertices_[n_] = v;
         n_ += 1;
         if (n_ != 4) {
             return nullptr;
         }
-        return std::make_shared<trapezoid>(vertices_);
+        return std::make_unique<trapezoid>(vertices_);
     }
 
 private:
