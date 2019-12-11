@@ -15,8 +15,8 @@
 int main() {
     sdl::renderer renderer("Editor");
     bool quit = false;
-    std::unique_ptr<builder> active_builder = nullptr;
-    std::unique_ptr<document> document = nullptr;
+    std::shared_ptr<builder> active_builder = nullptr;
+    std::shared_ptr<document> document = nullptr;
     const int32_t file_name_length = 128;
     char file_name[file_name_length] = "";
     int32_t remove_id = 0;
@@ -39,7 +39,7 @@ int main() {
             else if (event.extract(mouse_button_event)) {
                 if (active_builder && mouse_button_event.button() == sdl::mouse_button_event::left &&
                     mouse_button_event.type() == sdl::mouse_button_event::down) { //≈сли есть строитель и Ћ ћ
-                    std::unique_ptr<figure> figure = //если в строителе достаточное количество вершин, будет фигура, иначе nullptr
+                    std::shared_ptr<figure> figure = //если в строителе достаточное количество вершин, будет фигура, иначе nullptr
                         active_builder->add_vertex(vertex{ mouse_button_event.x(), mouse_button_event.y() }); // добавл€ем вершины
                     if (figure) {
                         //figures.emplace_back(std::move(figure)); //добавить полученный результат в вектор фигур
@@ -50,7 +50,7 @@ int main() {
             }
         }
 
-        for (const std::unique_ptr<figure> &figure : document->call_fgrs()) {
+        for (const std::shared_ptr<figure> &figure : document->call_fgrs()) {
             figure->render(renderer, red_c, grn_c, blu_c);
         }
 
@@ -62,7 +62,7 @@ int main() {
         if (ImGui::Button("Save")) {
             std::ofstream os(file_name);
             if (os) {
-                for (const std::unique_ptr<figure> &figure : document->call_fgrs()) {
+                for (const std::shared_ptr<figure> &figure : document->call_fgrs()) {
                     figure->save(os);
                 }
             }
@@ -72,23 +72,23 @@ int main() {
             std::ifstream is(file_name);
             if (is) {
                 loader loader;
-                document->call_fgrs() = loader.load(is);
+                //document->call_fgrs() = loader.load(is);
             }
         }
         ImGui::InputInt("R", &red_c);
         ImGui::InputInt("G", &grn_c);
         ImGui::InputInt("B", &blu_c);
         if (ImGui::Button("Triangle")) {
-            active_builder = std::make_unique<triangle_builder>();
+            active_builder = std::make_shared<triangle_builder>();
         }
         if (ImGui::Button("Square")) {
-            active_builder = std::make_unique<square_builder>();
+            active_builder = std::make_shared<square_builder>();
         }
         if (ImGui::Button("Rectangle")) {
-            active_builder = std::make_unique<rectangle_builder>();
+            active_builder = std::make_shared<rectangle_builder>();
         }
         if (ImGui::Button("Trapezoid")) {
-            active_builder = std::make_unique<trapezoid_builder>();
+            active_builder = std::make_shared<trapezoid_builder>();
         }
         ImGui::InputInt("Remove id", &remove_id);
         if (ImGui::Button("Remove")) {

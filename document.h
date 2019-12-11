@@ -23,17 +23,17 @@ struct command {
 
 struct document {
 	document() {};
-	void add_fgrs(std::unique_ptr<figure>& fgr);
+	void add_fgrs(std::shared_ptr<figure>& fgr);
 	void rmv_fgrs(int32_t rmv_id);
-	std::vector<std::unique_ptr<figure>> call_fgrs();
+	std::vector<std::shared_ptr<figure>> call_fgrs();
 	void undo();
 	
 private:
 	friend struct add_cmd;
 	friend struct rmv_cmd;
 
-	std::vector<std::unique_ptr<figure>> figures;
-	std::stack<std::unique_ptr<command>> commands;
+	std::vector<std::shared_ptr<figure>> figures;
+	std::stack<std::shared_ptr<command>> commands;
 };
 
 #endif // D_DOCUMENT_H_ 
