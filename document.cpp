@@ -35,7 +35,7 @@ void document::add_fgrs(std::unique_ptr<figure> fgr) {
 
 void document::rmv_fgrs(int32_t rmv_id) {
 	commands.push(std::make_unique<rmv_cmd>(this, rmv_id, std::move(figures[rmv_id])));
-	//figures.erase(figures.begin() + rmv_id);
+	figures.erase(figures.begin() + rmv_id);
 }
 
 void document::undo() {

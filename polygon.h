@@ -1,29 +1,29 @@
-#ifndef D_TRAPEZOID_H
-#define D_TRAPEZOID_H
+#ifndef D_POLYGON_H
+#define D_POLYGON_H
 
 #include "figure.h"
 
-struct trapezoid : figure {
-    trapezoid(const std::array<vertex, 4>& vertices) : vertices_(vertices) {}
+struct  polygon : figure {
+    polygon(const std::vector<vertex>& vertices) : vertices_(vertices) {}
 
     void render(const sdl::renderer& renderer) const override {
         renderer.set_color(color_.r, color_.g, color_.b);
-        for (int32_t i = 0; i < 4; ++i) {
+        for (int32_t i = 0; i < vertices_.size() - 1; ++i) {
             renderer.draw_line(vertices_[i].x, vertices_[i].y,
-                vertices_[(i + 1) % 4].x, vertices_[(i + 1) % 4].y);
+                vertices_[(i + 1)].x, vertices_[(i + 1)].y);
         }
     }
 
     void save(std::ostream& os) const override {
-        os << "trapezoid\n";
-        for (int32_t i = 0; i < 4; ++i) {
+        os << "polygon" << ' ' << vertices_.size() << std::endl;
+        for (int32_t i = 0; i < vertices_.size(); ++i) {
             os << vertices_[i].x << ' ' << vertices_[i].y << '\n';
         }
         os << this->color_.r << ' ' << this->color_.g << ' ' << this->color_.b << std::endl;
     }
 
 private:
-    std::array<vertex, 4> vertices_;
+    std::vector<vertex> vertices_;
 
 };
-#endif //D_TRAPEZOID_H
+#endif //D_POLYGON_H

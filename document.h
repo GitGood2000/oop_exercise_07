@@ -7,9 +7,13 @@
 #include<stack>
 
 #include "figure.h"
+#include "triangle.h"
 #include "square.h"
 #include "rectangle.h"
 #include "trapezoid.h"
+#include "polyline.h"
+#include "polygon.h"
+#include "circle.h"
 
 struct command {
 	virtual void undo() = 0;
