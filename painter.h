@@ -153,16 +153,25 @@ private:
 
 struct  circle_builder : builder {
     std::unique_ptr<figure> add_vertex(const vertex& v) {
-        vertices_[n_] = v;
-        n_ += 1;
+        if (n_ == 0) {
+            center_ = v;
+            n_ += 1;
+        }
+        else if (n_ == 1) {
+            int32_t rx = v.x - center_.x;
+            int32_t ry = v.y - center_.y;
+            radius_ = sqrt(rx * rx + ry * ry);
+            n_ += 1;
+        }
         if (n_ != 2) {
             return nullptr;
         }
-        return std::make_unique<circle>(vertices_);
+        return std::make_unique<circle>(center_, radius_);
     }
 private:
     int32_t n_ = 0;
-    std::array<vertex, 2> vertices_; // вершины фигуры
+    vertex center_; // центр круга
+    double radius_; // радиус круга
 };
 
 struct  polyline_builder : poly_builder {

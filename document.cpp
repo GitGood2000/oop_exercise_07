@@ -17,8 +17,8 @@ struct rmv_cmd : command {
 	rmv_cmd(document* document, int32_t idx, std::unique_ptr<figure>&& figure) : document_(document), idx_(idx), figure_(std::move(figure)) {}
 
 	void undo() override {
-		document_->figures[idx_] = std::move(figure_);
-		//document_->figures.emplace(document_->figures.begin() + idx_, std::move(figure_));
+		//document_->figures[idx_] = std::move(figure_);
+		document_->figures.emplace(document_->figures.begin() + idx_, std::move(figure_));
 		//document_->figures.pop_back();
 	}
 

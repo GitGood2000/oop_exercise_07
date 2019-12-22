@@ -64,6 +64,23 @@ int main() {
                         }
                     }
                 }
+                else {
+                    if (mouse_button_event.button() == sdl::mouse_button_event::left &&
+                        mouse_button_event.type() == sdl::mouse_button_event::down) {
+                        for (int i = 0; i < document.figures.size(); ++i) {
+                            if (document.figures[i]) {
+                                if (document.figures[i]->erase_check(vertex{ mouse_button_event.x(), mouse_button_event.y() })) {
+                                    if (i < document.figures.size()) {
+                                        if (document.figures[i]) {
+                                            document.rmv_fgrs(i);
+                                        }
+                                        //rmv_fgrs(figures.erase(figures.begin() + remove_id);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 

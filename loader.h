@@ -59,14 +59,13 @@ struct loader {
                 (*figures[figures.size() - 1]).set_color(load_clr.r, load_clr.g, load_clr.b);
             }
             else if (figure_name == std::string("circle")) {
-                std::array<vertex, 2> vertices;
-                for (int i = 0; i < 2; ++i) {
-                    is >> v.x >> v.y;
-                    vertices[i] = v;
-                }
+                vertex center;
+                double radius;
+                is >> v.x >> v.y >> radius;
+                    center = v;
                 struct color load_clr {};
                 is >> load_clr.r >> load_clr.g >> load_clr.b;
-                figures.emplace_back(std::make_unique<circle>(vertices));
+                figures.emplace_back(std::make_unique<circle>(center, radius));
                 (*figures[figures.size() - 1]).set_color(load_clr.r, load_clr.g, load_clr.b);
             }
             else if (figure_name == std::string("polyline")) {

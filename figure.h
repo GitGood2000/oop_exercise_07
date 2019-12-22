@@ -20,6 +20,7 @@ struct color {
 struct figure {
     virtual void render(const sdl::renderer& renderer) const = 0;
     virtual void save(std::ostream& os) const = 0;
+    virtual bool erase_check(const vertex& v) const = 0;
     virtual ~figure() = default;
 
     color color_{};

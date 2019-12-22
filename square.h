@@ -22,6 +22,19 @@ struct square : figure {
         os << this->color_.r << ' ' << this->color_.g << ' ' << this->color_.b << std::endl;
     }
 
+    bool  erase_check(const vertex& v) const override {
+        int32_t j;
+        bool count = false;
+        for (int32_t i = 0; i < 4; ++i) {
+            for (i = 0, j = vertices_.size() - 1; i < vertices_.size(); j = i++) {
+                if (((vertices_[i].y > v.y) != (vertices_[j].y > v.y)) && (v.x < (vertices_[j].x - vertices_[i].x) * (v.y - vertices_[i].y) / (vertices_[j].y - vertices_[i].y) + vertices_[i].x)) {
+                    count = !count;
+                }
+            }
+        }
+        return count;
+    }
+
 private:
     std::array<vertex, 4> vertices_;
 
