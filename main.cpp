@@ -97,6 +97,9 @@ int main() {
         ImGui::Begin("Menu");
         if (ImGui::Button("New canvas")) {
             document.figures.clear();
+            while (!document.commands.empty()) {
+                document.commands.pop();
+            };
         }
         ImGui::InputText("File name", file_name, file_name_length - 1);
         if (ImGui::Button("Save")) {

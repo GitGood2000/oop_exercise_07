@@ -39,10 +39,8 @@ void document::rmv_fgrs(int32_t rmv_id) {
 }
 
 void document::undo() {
-	if (figures.size()){
-		if (commands.size()) {
-			commands.top()->undo();
-			commands.pop();
-		}
+	if (commands.size()) {
+		commands.top()->undo();
+		commands.pop();
 	}
 }
