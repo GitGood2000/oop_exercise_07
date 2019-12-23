@@ -117,6 +117,9 @@ int main() {
                 loader loader;
                 document.figures = loader.load(is);
             }
+            while (!document.commands.empty()) {
+                document.commands.pop();
+            };
         }
         ImGui::InputInt("R", &fgr_clr.r);
         ImGui::InputInt("G", &fgr_clr.g);
